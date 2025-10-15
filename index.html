@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyển Khoản Nhanh - 1 Chạm</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            border: 4px solid #667eea;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .bank-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin: 25px 0;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+        .bank-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: rgba(255,255,255,0.1);
+            transform: rotate(30deg);
+        }
+        .bank-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .account-info {
+            font-size: 18px;
+            margin: 10px 0;
+            position: relative;
+        }
+        .copy-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        .copy-btn:hover {
+            background: white;
+            color: #667eea;
+        }
+        .transfer-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        .app-btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .vcb-btn {
+            background: #00a1e3;
+            color: white;
+        }
+        .momo-btn {
+            background: #a50064;
+            color: white;
+        }
+        .manual-btn {
+            background: #ff6b6b;
+            color: white;
+        }
+        .app-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #856404;
+        }
+        .success-message {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://scontent.fdad3-6.fna.fbcdn.net/v/t39.30808-6/565204394_2041817129690787_5675379887575667534_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=T6ulcVS6fn8Q7kNvwFAajQS&_nc_oc=Admdx41qdFSlNZ4dLvaNC1_76EUIYwUBVtvlQOj7zyx04nbsA95cMZDN9dBS1m5U6ADMk2VPNeLfSA9zNYohWUBl&_nc_zt=23&_nc_ht=scontent.fdad3-6.fna&_nc_gid=iW_aUs_S2VBFvfDq3n89-w&oh=00_AfeBZcurDN8ZZj8BIGMjJx1MdLV7lkQJtO-0YrHqzk21jg&oe=68F5596E" alt="Avatar" class="avatar">
+        <h1>Thông tin chuyển khoản</h1>
+        <p class="subtitle">Chọn 1 trong 2 cách dưới đây</p>
+        
+        <div class="bank-card">
+            <div class="bank-name">Ngân hàng BIDV</div>
+            <div class="account-info">
+                <strong>STK:</strong> 
+                <span id="accountNumber">5809770068</span>
+                <button class="copy-btn" onclick="copyAccountNumber()">📋 Copy</button>
+            </div>
+            <div class="account-info">
+                <strong>Tên TK:</strong> NGUYỄN HUỲNH NGỌC THANH
+            </div>
+     
+        </div>
+
+        <div id="copySuccess" class="success-message">
+            ✅ Đã copy số tài khoản!
+        </div>
+
+        <div class="transfer-buttons">
+     
+            
+            <!-- Deep Link cho Momo -->
+            <a href="momo://transfer?phone=0935568394" 
+               class="app-btn momo-btn">
+               💜 Ví Momo
+            </a>
+            
+     
+        </div>
+
+        <div class="note">
+            💡 <strong>Hướng dẫn:</strong><br>
+            • Bấm "Copy" để sao chép số tài khoản<br>
+            • Vào ứng dụng ngân hàng để chuyển khoản<br>
+     
+        </div>
+    </div>
+
+    <script>
+        function copyAccountNumber() {
+            const accountNumber = document.getElementById('accountNumber').textContent;
+            navigator.clipboard.writeText(accountNumber).then(() => {
+                const successMsg = document.getElementById('copySuccess');
+                successMsg.style.display = 'block';
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 3000);
+            });
+        }
+
+        // Tự động focus vào nút copy khi trang load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Có thể thêm các hiệu ứng khác ở đây
+        });
+    </script>
+</body>
+</html>
